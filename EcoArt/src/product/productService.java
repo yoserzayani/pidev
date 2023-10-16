@@ -7,6 +7,8 @@ package product;
 
 import InterfaceCrud.interfaceCRUD;
 import connexion.MyConnection;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  *
@@ -60,17 +65,17 @@ public productService () {}
 @Override
 public product chercher (product p){
   
-        String req ="SELECT * FROM product WHERE id_pdts LIKE ? AND nom LIKE ? AND prix LIKE ? AND qte LIKE ? AND categ LIKE ? AND matiere LIKE ? ; ";
+        String req ="SELECT * FROM product WHERE  nom LIKE ? AND prix LIKE ? AND qte LIKE ? AND categ LIKE ? AND matiere LIKE ? ; ";
         product pTr = new product();
       try {
         PreparedStatement prepStat = mycnx.prepareStatement(req);
         
-        prepStat.setLong(1, p.getId_pdts());
-        prepStat.setString(2,p.getNom());
-        prepStat.setDouble (3,p.getPrix());
-        prepStat.setInt (4,p.getQte());
-        prepStat.setString(5,p.getCateg() );
-        prepStat.setString(6, p.getMatiere());
+       // prepStat.setLong(1, p.getId_pdts());
+        prepStat.setString(1,p.getNom());
+        prepStat.setDouble (2,p.getPrix());
+        prepStat.setInt (3,p.getQte());
+        prepStat.setString(4,p.getCateg() );
+        prepStat.setString(5, p.getMatiere());
        // prepStat.setString(7, p.getDescription());
         
         
@@ -78,7 +83,7 @@ public product chercher (product p){
          
           if(!result.next())
                 return null;
-         pTr.setId_pdts(result.getLong("id_pdts"));
+         //pTr.setId_pdts(result.getLong("id_pdts"));
          pTr.setNom(result.getString("nom"));
          pTr.setPrix(result.getDouble("prix"));
          pTr.setQte(result.getInt("qte"));
@@ -96,16 +101,14 @@ public product chercher (product p){
 @Override
     public int supprimer(product p) {
         
-        String req="DELETE FROM product WHERE product.id_pdts = ?;";
+        String req=" DELETE  FROM product WHERE id_pdts = ? ;";
         try {
             PreparedStatement prepStat = mycnx.prepareStatement(req);
             prepStat.setLong(1, p.getId_pdts());
             int rowsAffected =  prepStat.executeUpdate();
+           
             if(rowsAffected==0)
-                return -1;
-            
-            
-            
+                return -1;    
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -166,7 +169,33 @@ public product chercher (product p){
        }
        return retour ; 
     }
-
+     public void insertImageIntoDatabase(File imageFile) {
+      String req = "INSERT INTO images (image_data) VALUES (?)";
+        try{
+            FileInputStream inputStream = new FileInputStream(imageFile);
+            PreparedStatement prepStat = mycnx.prepareStatement(req);
+                // PreparedStatement preparedStatement = connection.prepareStatement(insertSQL))
+                prepStat.setBinaryStream(1, inputStream, (int) imageFile.length());
+                prepStat.executeUpdate();
+                System.out.println("Image inserted into the database.");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+          public void refresh (TableView<product>tableProduit,TableColumn<product,String> nom,TableColumn<product, Double> prix,TableColumn<product, Integer> qte,
+            TableColumn<product,String> categ,TableColumn<product,String> matiere,TableColumn<product,String> description) {
+            nom.setCellValueFactory(new PropertyValueFactory<product,String>("nom"));
+            prix.setCellValueFactory(new PropertyValueFactory<product,Double>("prix"));
+             qte.setCellValueFactory(new PropertyValueFactory<product,Integer>("qte"));
+             categ.setCellValueFactory(new PropertyValueFactory<product,String>("categ"));
+             matiere.setCellValueFactory(new PropertyValueFactory<product,String>("matiere"));
+             description.setCellValueFactory(new PropertyValueFactory<product,String>("description"));
+             productService pS= new productService();
+             ObservableList <product> productList=FXCollections.observableArrayList(pS.getAllProducts());
+             tableProduit.setItems(productList);
+         
+    }
   
     }
 

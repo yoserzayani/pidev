@@ -6,18 +6,18 @@
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/NewFXProduct.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/ecoart/EcoArt.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/commande/commande.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/AjoutProduit.fxml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/ProduitsController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/Produits.fxml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/Produits.fxml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/AjoutProduitController.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/product/productService.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/connexion/MyConnection.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/Alert/Alert.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/AAAA.fxml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/product/product.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/image/o-removebg-preview.png</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/LineOrder/LineOrderService.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/LineOrder/LineOrder.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/AAAAController.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/InterfaceCrud/interfaceCRUD.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/commande/commandeService.java</file>
         </group>

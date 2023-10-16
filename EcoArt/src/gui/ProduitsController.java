@@ -15,10 +15,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import product.product;
 import product.productService;
@@ -57,56 +60,73 @@ public class ProduitsController implements Initializable {
      * @param url
      * @param rb
      */
+      productService pS = new productService();
     @Override
+  
     public void initialize(URL url, ResourceBundle rb) {
-    
+        
+       pS.refresh(tableProduit, nom, prix, qte, categ, matiere, description);
+             
     }    
 
     
     
 
-    private void afficher (TableColumn<product,String> nom,TableColumn<product, Double> prix,TableColumn<product, Integer> qte,
-            TableColumn<product,String> categ,TableColumn<product,String> matiere,TableColumn<product,String> description) {
-            nom.setCellValueFactory(new PropertyValueFactory<product,String>("nom"));
-         prix.setCellValueFactory(new PropertyValueFactory<product,Double>("prix"));
-          qte.setCellValueFactory(new PropertyValueFactory<product,Integer>("qte"));
-           categ.setCellValueFactory(new PropertyValueFactory<product,String>("categ"));
-            matiere.setCellValueFactory(new PropertyValueFactory<product,String>("matiere"));
-             description.setCellValueFactory(new PropertyValueFactory<product,String>("description"));
-             productService pS= new productService();
-             ObservableList <product> productList=FXCollections.observableArrayList(pS.getAllProducts());
-             tableProduit.setItems(productList);
-         
-    }
-
-    @FXML
-    private void supprimer(ActionEvent event) {
-    }
-
-    @FXML
-    private void modifier(ActionEvent event) {
-    }
-
    
 
+
+  
+
     @FXML
-   private void ajouterP(ActionEvent event) {
+    private void supprimerP(MouseEvent event) {
+        
+        product p =tableProduit.getSelectionModel().getSelectedItem();
+        if (p!= null){
+        ObservableList<product> data= tableProduit.getItems();
+        productService pS= new productService();
+        int result = pS.supprimer(p);
+            System.out.println(result);
+            data.remove(p);
+        
        
-               try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("AjoutProduit.fxml"));
-            Parent root = loader.load();
-            AjoutProduitController APC=loader.getController();
-            Stage cStage= (Stage) btnAjouter.getScene().getWindow();
-            cStage.setWidth(710);
-            cStage.setHeight(740);
-            btnAjouter.getScene().setRoot(root);
-            
-            }catch (IOException ex) {
-                //Logger.getLogger(ProduitsController.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("Error: "+ex.getMessage());
-            }
-            
-        }
+        
+        
+        
+    }
+        
+       
+    }      
+    
+
+    @FXML
+    private void modifierP(MouseEvent event) {
+        
+        
+    }
+
+    @FXML
+   private void ajouterP(MouseEvent event) {
+
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AjoutProduit.fxml"));
+        Parent root = loader.load();
+        AjoutProduitController APC = loader.getController();
+
+        // Create a new stage for the new scene
+        Stage newStage = new Stage();
+
+        // Set the scene for the new stage
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+
+        // Show the new stage
+        newStage.show();
+    } catch (IOException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+
+
     } 
     
    

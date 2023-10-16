@@ -5,16 +5,21 @@
  */
 package gui;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
-import javafx.scene.text.TextFlow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import product.product;
 import product.productService;
 
@@ -45,32 +50,61 @@ public class AjoutProduitController implements Initializable {
     private TextField tdescription;
     @FXML
     private Spinner<Integer> tqte;
+     SpinnerValueFactory<Integer>valueFactory= new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100,1);
+    @FXML
+    private ImageView imageU;
+    @FXML
+    private Button upload;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // 
         
-       
+       valueFactory.setValue(1);
+        tqte.setValueFactory(valueFactory);
      
         
     }    
 
     @FXML
-    private void save(ActionEvent event) {
-       /* String nom=tnom.getText();  
+    private void save(MouseEvent event) {
+        String nom=tnom.getText();  
         Double prix=Double.parseDouble(tprix.getText());
         String categ=tcateg.getText();
         String matiere=tmatiere.getText();
         String description=tdescription.getText();
         
         
-        SpinnerValueFactory<Integer>valueFactory=new SpinnerValueFactory.IntegerSpinnerValueFactory(1,100);
-        valueFactory.setValue(1);
-        tqte.setValueFactory(valueFactory);
+       
+        
         int qte  = tqte.getValue();
-        product p=new product(nom, prix, qte, categ, matiere,description);
+        product p= new product(nom, prix,qte,categ,matiere,description);
         productService pS=new productService();
-        pS.ajouter(p);
-        */
+        
+         pS.ajouter(p);
+        
+        Alert alert = new Alert (AlertType.INFORMATION);
+        alert.setTitle("add produit !");
+        alert.setHeaderText("Information");
+        alert.setContentText("produit bien ajouté");
+        alert.showAndWait(); 
+    
+ 
+    }
+
+    @FXML
+    private void upload(MouseEvent event) {
+           FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            Image image = new Image(file.toURI().toString());
+            imageU.setImage(image);
+
+            // Insert the image into the database
+            productService pS=new productService();
+            pS.insertImageIntoDatabase(file);
+        }
     }
     
 }

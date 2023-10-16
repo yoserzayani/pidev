@@ -5,6 +5,7 @@
  */
 package product;
 
+import java.sql.Blob;
 import java.util.Objects;
 /**
  *
@@ -12,12 +13,14 @@ import java.util.Objects;
  */
 public class product {
     private long id_pdts;
+    private long id_u;
     private String nom;
     private double prix;
     private int qte ;
     private String categ;
     private String matiere;
     private String description;
+    private Blob image ;
     
    
     
@@ -32,6 +35,27 @@ public class product {
     this.description=description;
     
     }
+
+    public product(long id_pdts,long id_u, String nom, double prix, int qte, String categ, String matiere, String description, Blob image) {
+        this.id_pdts = id_pdts;
+        this.id_u=id_u;
+        this.nom = nom;
+        this.prix = prix;
+        this.qte = qte;
+        this.categ = categ;
+        this.matiere = matiere;
+        this.description = description;
+        this.image = image;
+    }
+
+    public Blob getImage() {
+        return image;
+    }
+
+    public void setImage(Blob image) {
+        this.image = image;
+    }
+    
 
     public product() {
     }
@@ -94,6 +118,14 @@ public class product {
         this.qte = qte;
     }
 
+    public long getId_u() {
+        return id_u;
+    }
+
+    public void setId_u(long id_u) {
+        this.id_u = id_u;
+    }
+
    
 
     @Override
@@ -131,6 +163,7 @@ public class product {
         }
         return true;
     }
+    
 
     @Override
     public String toString() {
