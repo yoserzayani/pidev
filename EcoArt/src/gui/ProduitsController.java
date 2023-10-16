@@ -65,15 +65,18 @@ public class ProduitsController implements Initializable {
   
     public void initialize(URL url, ResourceBundle rb) {
         
-       pS.refresh(tableProduit, nom, prix, qte, categ, matiere, description);
-             
+     //  pS.refresh(tableProduit, nom, prix, qte, categ, matiere, description);
+         
+      refreshTable();
     }    
 
     
     
 
    
-
+    /*public void affiche (TableColumn<product,String> nom,TableColumn<product, Double> prix,TableColumn<product, Integer> qte,
+            TableColumn<product,String> categ,TableColumn<product,String> matiere,TableColumn<product,String> description) {
+    }*/
 
   
 
@@ -87,7 +90,8 @@ public class ProduitsController implements Initializable {
         int result = pS.supprimer(p);
             System.out.println(result);
             data.remove(p);
-        
+            
+            
        
         
         
@@ -125,6 +129,19 @@ public class ProduitsController implements Initializable {
         System.out.println("Error: " + ex.getMessage());
     }
 }
+   public void refreshTable() {
+        // Implement your code to refresh the TableView here
+        productService pS = new productService();
+        ObservableList<product> productList = FXCollections.observableArrayList(pS.getAllProducts());
+            nom.setCellValueFactory(new PropertyValueFactory<product,String>("nom"));
+            prix.setCellValueFactory(new PropertyValueFactory<product,Double>("prix"));
+             qte.setCellValueFactory(new PropertyValueFactory<product,Integer>("qte"));
+             categ.setCellValueFactory(new PropertyValueFactory<product,String>("categ"));
+             matiere.setCellValueFactory(new PropertyValueFactory<product,String>("matiere"));
+             description.setCellValueFactory(new PropertyValueFactory<product,String>("description"));
+        
+        tableProduit.setItems(productList);
+    }
 
 
     } 

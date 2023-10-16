@@ -183,7 +183,7 @@ public product chercher (product p){
             e.printStackTrace();
         }
     }
-          public void refresh (TableView<product>tableProduit,TableColumn<product,String> nom,TableColumn<product, Double> prix,TableColumn<product, Integer> qte,
+         /* public void refresh (TableView<product>tableProduit,TableColumn<product,String> nom,TableColumn<product, Double> prix,TableColumn<product, Integer> qte,
             TableColumn<product,String> categ,TableColumn<product,String> matiere,TableColumn<product,String> description) {
             nom.setCellValueFactory(new PropertyValueFactory<product,String>("nom"));
             prix.setCellValueFactory(new PropertyValueFactory<product,Double>("prix"));
@@ -195,8 +195,10 @@ public product chercher (product p){
              ObservableList <product> productList=FXCollections.observableArrayList(pS.getAllProducts());
              tableProduit.setItems(productList);
          
-    }
+    }*/
   
     }
 
   
+/*TableView<product>tableProduit,TableColumn<product,String> nom,TableColumn<product, Double> prix,TableColumn<product, Integer> qte,
+            TableColumn<product,String> categ,TableColumn<product,String> matiere,TableColumn<product,String> description*/

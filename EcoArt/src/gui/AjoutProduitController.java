@@ -5,11 +5,17 @@
  */
 package gui;
 
+import static com.sun.javafx.css.SizeUnits.PC;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -20,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import product.product;
 import product.productService;
 
@@ -29,6 +36,7 @@ import product.productService;
  * @author User
  */
 public class AjoutProduitController implements Initializable {
+//private Stage stage;
 
     //private Spinner<Integer> qte;
 
@@ -77,7 +85,7 @@ public class AjoutProduitController implements Initializable {
        
         
         int qte  = tqte.getValue();
-        product p= new product(nom, prix,qte,categ,matiere,description);
+        product p= new product(nom, prix, qte, categ, matiere, description);
         productService pS=new productService();
         
          pS.ajouter(p);
@@ -87,9 +95,21 @@ public class AjoutProduitController implements Initializable {
         alert.setHeaderText("Information");
         alert.setContentText("produit bien ajouté");
         alert.showAndWait(); 
+         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        currentStage.close();
+
+        // Call a method in ProduitsController to refresh the data
+        ProduitsController PC= new ProduitsController();
+        if (PC!= null) {
+            PC.refreshTable();
+            
+        }
     
  
     }
+   /* public void getStage (Stage stage){
+        this.stage=stage;
+    }*/
 
     @FXML
     private void upload(MouseEvent event) {
@@ -104,6 +124,7 @@ public class AjoutProduitController implements Initializable {
             // Insert the image into the database
             productService pS=new productService();
             pS.insertImageIntoDatabase(file);
+            
         }
     }
     
