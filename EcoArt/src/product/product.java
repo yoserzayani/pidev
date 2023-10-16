@@ -13,14 +13,24 @@ import java.util.Objects;
  */
 public class product {
     private long id_pdts;
-    private long id_u;
+   // private long id_u;
     private String nom;
     private double prix;
     private int qte ;
     private String categ;
     private String matiere;
     private String description;
-    private Blob image ;
+    private String image ;
+
+    public product(String nom, double prix, int qte, String categ, String matiere, String description, String image) {
+        this.nom = nom;
+        this.prix = prix;
+        this.qte = qte;
+        this.categ = categ;
+        this.matiere = matiere;
+        this.description = description;
+        this.image = image;
+    }
     
    
     
@@ -36,9 +46,9 @@ public class product {
     
     }
 
-    public product(long id_pdts,long id_u, String nom, double prix, int qte, String categ, String matiere, String description, Blob image) {
+    public product(long id_pdts,long id_u, String nom, double prix, int qte, String categ, String matiere, String description, String image) {
         this.id_pdts = id_pdts;
-        this.id_u=id_u;
+       // this.id_u=id_u;
         this.nom = nom;
         this.prix = prix;
         this.qte = qte;
@@ -48,11 +58,11 @@ public class product {
         this.image = image;
     }
 
-    public Blob getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage( String  image) {
         this.image = image;
     }
     
@@ -118,13 +128,13 @@ public class product {
         this.qte = qte;
     }
 
-    public long getId_u() {
+   /* public long getId_u() {
         return id_u;
     }
 
     public void setId_u(long id_u) {
         this.id_u = id_u;
-    }
+    }*/
 
    
 

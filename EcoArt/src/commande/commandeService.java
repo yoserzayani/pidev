@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +29,15 @@ public class commandeService {
      public int ajouter (commande c) {
     if(this.chercher(c)!=null)
             return -1; 
-    String req = "INSERT INTO commande (numC,id_client,adresse,date,numTel,email)" + "VALUES (?,?,?,?,?,?);";
+    String req = "INSERT INTO commande (nomC,id_client,adresse,date,numTel,email)" + "VALUES (?,?,?,?,?,?);";
     try{
         
     PreparedStatement prepStat = mycnx.prepareStatement(req);
     
-    prepStat.setLong(1, c.getNumC());
+    prepStat.setString(1, c.getNomC());
     prepStat.setInt(2,c.getId_client());
     prepStat.setString (3,c.getAdresse());
-    prepStat.setDate (4,c.getDate());
+    prepStat.setObject(4, c.getDate());
     prepStat.setLong(5,c.getNumTel());
     prepStat.setString(6,c.getEmail());
     int rowsAffected =  prepStat.executeUpdate();
@@ -52,14 +53,14 @@ public class commandeService {
 
 public commande chercher (commande c){
   
-        String req ="SELECT * FROM  commande WHERE numC LIKE ? AND id_client LIKE ? AND adresse LIKE ? AND date LIKE ? AND numTel LIKE ? AND email LIKE ? ; ";
+        String req ="SELECT * FROM  commande WHERE nomC LIKE ? AND id_client LIKE ? AND adresse LIKE ? AND date LIKE ? AND numTel LIKE ? AND email LIKE ? ; ";
         commande cTr = new commande();
       try {
         PreparedStatement prepStat = mycnx.prepareStatement(req);
-          prepStat.setLong(1, c.getNumC());
+          prepStat.setString(1, c.getNomC());
           prepStat.setInt(2,c.getId_client());
           prepStat.setString (3,c.getAdresse());
-          prepStat.setDate (4,c.getDate());
+         prepStat.setObject(4, c.getDate());
           prepStat.setInt(5,c.getNumTel());
           prepStat.setString(6,c.getEmail());
         
@@ -70,10 +71,10 @@ public commande chercher (commande c){
          
           if(!result.next())
                 return null;
-         cTr.setNumC(result.getLong("numC"));
+         cTr.setNomC(result.getString("nomC"));
          cTr.setId_client(result.getInt("id_client"));
          cTr.setAdresse(result.getString("adresse"));
-         cTr.setDate(result.getDate("date"));
+         cTr.setDate(result.getObject("date",LocalDate.class));
          cTr.setNumTel(result.getInt("numTel"));
          cTr.setEmail(result.getString("email"));
          //pTr.setDescription(result.getString("desc"));
@@ -107,7 +108,7 @@ public commande chercher (commande c){
     
     public commande modifier (commande c, commande c1) {
     
-   String req = "UPDATE `commande` SET  `numC` = ?, `id_client` = ?, `adresse` = ?, `date` = ?, `numTel` = ?, "
+   String req = "UPDATE `commande` SET  `nomC` = ?, `id_client` = ?, `adresse` = ?, `date` = ?, `numTel` = ?, "
            + "`email` = ? WHERE `commande`.`id_c` = ? ;"; 
    try {
    
@@ -115,10 +116,10 @@ public commande chercher (commande c){
    
     
    // prepStat.setLong(1, p1.getId_pdts());
-          prepStat.setLong(1, c1.getNumC());
+          prepStat.setString(1, c1.getNomC());
           prepStat.setInt(2,c1.getId_client());
           prepStat.setString (3,c1.getAdresse());
-          prepStat.setDate (4,c1.getDate());
+          prepStat.setObject(4, c1.getDate());
           prepStat.setInt(5,c1.getNumTel());
           prepStat.setString(6,c1.getEmail());
           prepStat.setLong(7,c.getId_c());
@@ -142,10 +143,10 @@ public commande chercher (commande c){
         ResultSet result = prepStat.executeQuery();
         while (result.next()){
             commande cTr =new commande();
-         cTr.setNumC(result.getLong("numC"));
+         cTr.setNomC(result.getString("numC"));
          cTr.setId_client(result.getInt("id_client"));
          cTr.setAdresse(result.getString("adresse"));
-         cTr.setDate(result.getDate("date"));
+         cTr.setDate(result.getObject("date",LocalDate.class));
          cTr.setNumTel(result.getInt("numTel"));
          cTr.setEmail(result.getString("email"));
            

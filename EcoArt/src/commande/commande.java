@@ -6,6 +6,7 @@
 package commande;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -14,22 +15,22 @@ import java.util.Objects;
  */
 public class commande {
     long id_c;
-    long numC;
+    String nomC;
     int id_client;
     String adresse;
-    Date date;
+    LocalDate date = LocalDate.now();
     int numTel;
     String email; 
 
-    public  commande(long id_c, long numC, int id_client, String adresse, Date date, int numTel, String email) {
-        this.id_c = id_c;
-        this.numC = numC;
+    public commande(String nomC, int id_client, String adresse, int numTel, String email) {
+        this.nomC = nomC;
         this.id_client = id_client;
         this.adresse = adresse;
-        this.date = date;
         this.numTel = numTel;
         this.email = email;
     }
+
+
 
    
 
@@ -43,14 +44,13 @@ public class commande {
     public void setId_c(long id_c) {
         this.id_c = id_c;
     }
-    
 
-    public long getNumC() {
-        return numC;
+    public String getNomC() {
+        return nomC;
     }
 
-    public void setNumC(long numC) {
-        this.numC = numC;
+    public void setNomC(String nomC) {
+        this.nomC = nomC;
     }
 
     public int getId_client() {
@@ -69,11 +69,11 @@ public class commande {
         this.adresse = adresse;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -93,12 +93,8 @@ public class commande {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "commande{" + "numC=" + numC + ", id_client=" + id_client + ", adresse=" + adresse + ", date=" + date + ", numTel=" + numTel + ", email=" + email + '}';
-    }
-
    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -114,13 +110,13 @@ public class commande {
         if (this.id_c != other.id_c) {
             return false;
         }
-        if (this.numC != other.numC) {
-            return false;
-        }
         if (this.id_client != other.id_client) {
             return false;
         }
         if (this.numTel != other.numTel) {
+            return false;
+        }
+        if (!Objects.equals(this.nomC, other.nomC)) {
             return false;
         }
         if (!Objects.equals(this.adresse, other.adresse)) {
@@ -135,9 +131,6 @@ public class commande {
         return true;
     }
 
-   
-     
-    
     
     
 }

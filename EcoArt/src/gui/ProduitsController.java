@@ -67,8 +67,8 @@ public class ProduitsController implements Initializable {
         
      //  pS.refresh(tableProduit, nom, prix, qte, categ, matiere, description);
          
-      refreshTable();
-    }    
+       refreshTable();
+    }
 
     
     
@@ -80,26 +80,8 @@ public class ProduitsController implements Initializable {
 
   
 
-    @FXML
-    private void supprimerP(MouseEvent event) {
+  
         
-        product p =tableProduit.getSelectionModel().getSelectedItem();
-        if (p!= null){
-        ObservableList<product> data= tableProduit.getItems();
-        productService pS= new productService();
-        int result = pS.supprimer(p);
-            System.out.println(result);
-            data.remove(p);
-            
-            
-       
-        
-        
-        
-    }
-        
-       
-    }      
     
 
     @FXML
@@ -131,7 +113,6 @@ public class ProduitsController implements Initializable {
 }
    public void refreshTable() {
         // Implement your code to refresh the TableView here
-        productService pS = new productService();
         ObservableList<product> productList = FXCollections.observableArrayList(pS.getAllProducts());
             nom.setCellValueFactory(new PropertyValueFactory<product,String>("nom"));
             prix.setCellValueFactory(new PropertyValueFactory<product,Double>("prix"));
@@ -143,8 +124,20 @@ public class ProduitsController implements Initializable {
         tableProduit.setItems(productList);
     }
 
+    @FXML
+    private void supprimerP(ActionEvent event) {
+            product p =tableProduit.getSelectionModel().getSelectedItem();
+        if (p!= null){
+        ObservableList<product> data= tableProduit.getItems();
+        int result = pS.supprimer(p);
+            System.out.println(result);
+            data.remove(p);
+            refreshTable();
+    }
 
-    } 
+
+    }
+}
     
    
     

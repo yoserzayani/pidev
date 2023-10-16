@@ -19,7 +19,7 @@
             <TableColumn fx:id="description" prefWidth="102.40001220703124" text="DESCRIPTION" />
         </columns>
       </TableView>
-      <Button fx:id="supprimer" layoutX="770.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#supprimerP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Supprimer " textFill="WHITE" />
+      <Button fx:id="supprimer" layoutX="770.0" layoutY="385.0" mnemonicParsing="false" onAction="#supprimerP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Supprimer " textFill="WHITE" />
       <Button fx:id="Modifier" layoutX="642.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#modifierP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Modifier" textFill="WHITE" />
       <Button fx:id="btnAjouter" layoutX="507.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#ajouterP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Ajouter" textFill="WHITE" />
       <ImageView fitHeight="242.0" fitWidth="425.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">

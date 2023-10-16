@@ -39,7 +39,7 @@ public productService () {}
     public int ajouter (product p){
     if(this.chercher(p)!=null)
             return -1; 
-    String req = "INSERT INTO Product (id_pdts,nom,prix,qte,categ,matiere,description)" + "VALUES (?,?, ?,?,?,?,?);";
+    String req = "INSERT INTO Product (idPdts,nom,prix,qte,categ,matiere,description,image)" + "VALUES (?,?,?,?,?,?,?,?);";
     try{
         
     PreparedStatement prepStat = mycnx.prepareStatement(req);
@@ -51,6 +51,7 @@ public productService () {}
     prepStat.setString(5,p.getCateg() );
     prepStat.setString(6,p.getMatiere());
     prepStat.setString(7, p.getDescription());
+    prepStat.setString(8, p.getImage());
     int rowsAffected =  prepStat.executeUpdate();
 
       } catch (SQLException ex) {
@@ -65,17 +66,18 @@ public productService () {}
 @Override
 public product chercher (product p){
   
-        String req ="SELECT * FROM product WHERE  nom LIKE ? AND prix LIKE ? AND qte LIKE ? AND categ LIKE ? AND matiere LIKE ? ; ";
+        String req ="SELECT * FROM product WHERE idPdts LIKE ? AND nom LIKE ? AND prix LIKE ? AND qte LIKE ? AND categ LIKE ? AND matiere LIKE ? ; ";
         product pTr = new product();
       try {
         PreparedStatement prepStat = mycnx.prepareStatement(req);
         
-       // prepStat.setLong(1, p.getId_pdts());
-        prepStat.setString(1,p.getNom());
-        prepStat.setDouble (2,p.getPrix());
-        prepStat.setInt (3,p.getQte());
-        prepStat.setString(4,p.getCateg() );
-        prepStat.setString(5, p.getMatiere());
+       prepStat.setLong(1, p.getId_pdts());
+       // prepStat.setLong(1,p.getId_u());
+        prepStat.setString(2,p.getNom());
+        prepStat.setDouble (3,p.getPrix());
+        prepStat.setInt (4,p.getQte());
+        prepStat.setString(5,p.getCateg() );
+        prepStat.setString(6, p.getMatiere());
        // prepStat.setString(7, p.getDescription());
         
         
@@ -83,7 +85,7 @@ public product chercher (product p){
          
           if(!result.next())
                 return null;
-         //pTr.setId_pdts(result.getLong("id_pdts"));
+       //  pTr.setId_u(result.getLong("idU"));
          pTr.setNom(result.getString("nom"));
          pTr.setPrix(result.getDouble("prix"));
          pTr.setQte(result.getInt("qte"));
@@ -101,10 +103,10 @@ public product chercher (product p){
 @Override
     public int supprimer(product p) {
         
-        String req=" DELETE  FROM product WHERE id_pdts = ? ;";
+        String req="DELETE FROM product WHERE `product`.`idPdts` = ? ";
         try {
             PreparedStatement prepStat = mycnx.prepareStatement(req);
-            prepStat.setLong(1, p.getId_pdts());
+            prepStat.setLong(1,p.getId_pdts());
             int rowsAffected =  prepStat.executeUpdate();
            
             if(rowsAffected==0)
@@ -118,14 +120,14 @@ public product chercher (product p){
 @Override
     public product modifier (product p, product p1) {
     
-   String req = "UPDATE `product` SET  `nom` = ?, `prix` = ?, `qte` = ?, `categ` = ?, `matiere` = ?, "
+   String req = "UPDATE `product` SET idU = ? `nom` = ?, `prix` = ?, `qte` = ?, `categ` = ?, `matiere` = ?, "
            + "`description` = ? WHERE `product`.`id_pdts` = ? ;"; 
    try {
    
        PreparedStatement prepStat = mycnx.prepareStatement(req);
    
     
-   // prepStat.setLong(1, p1.getId_pdts());
+    //prepStat.setLong(1, p1.getId_u());
     prepStat.setString(1,p1.getNom());
     prepStat.setDouble(2,p1.getPrix());
     prepStat.setInt(3,p1.getQte());
@@ -147,13 +149,14 @@ public product chercher (product p){
     public List<product>getAllProducts(){
         
         List<product> retour= new ArrayList();
-        String req ="select * from `product` ";
+        String req ="SELECT * FROM `product` ";
        try{
            
         PreparedStatement prepStat = mycnx.prepareStatement(req);
         ResultSet result = prepStat.executeQuery();
         while (result.next()){
             product pTr =new product();
+           // pTr.setId_u(result.getLong("idU"));
             pTr.setNom(result.getString("nom"));
             pTr.setPrix(result.getDouble("prix"));
             pTr.setQte(result.getInt("qte"));
@@ -169,7 +172,7 @@ public product chercher (product p){
        }
        return retour ; 
     }
-     public void insertImageIntoDatabase(File imageFile) {
+    /* public void insertImageIntoDatabase(File imageFile) {
       String req = "INSERT INTO images (image_data) VALUES (?)";
         try{
             FileInputStream inputStream = new FileInputStream(imageFile);
