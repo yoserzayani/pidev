@@ -103,7 +103,7 @@ public product chercher (product p){
 @Override
     public int supprimer(product p) {
         
-        String req="DELETE FROM product WHERE `product`.`idPdts` = ? ";
+        String req="DELETE FROM product WHERE `product`.`idPdts` = ? ;";
         try {
             PreparedStatement prepStat = mycnx.prepareStatement(req);
             prepStat.setLong(1,p.getId_pdts());
@@ -111,7 +111,7 @@ public product chercher (product p){
            
             if(rowsAffected==0)
                 return -1;    
-        } catch (SQLException ex) {
+            } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
         
@@ -156,7 +156,7 @@ public product chercher (product p){
         ResultSet result = prepStat.executeQuery();
         while (result.next()){
             product pTr =new product();
-           // pTr.setId_u(result.getLong("idU"));
+            pTr.setId_pdts(result.getLong("idPdts"));
             pTr.setNom(result.getString("nom"));
             pTr.setPrix(result.getDouble("prix"));
             pTr.setQte(result.getInt("qte"));

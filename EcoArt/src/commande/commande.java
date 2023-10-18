@@ -21,6 +21,7 @@ public class commande {
     LocalDate date = LocalDate.now();
     int numTel;
     String email; 
+    double Total;
 
     public commande(String nomC, int id_client, String adresse, int numTel, String email) {
         this.nomC = nomC;

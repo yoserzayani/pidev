@@ -81,47 +81,52 @@ public class AjoutProduitController implements Initializable {
     }    
 
     @FXML
-    private void save(MouseEvent event) throws IOException {
-        String nom=tnom.getText();  
-        Double prix=Double.parseDouble(tprix.getText());
-        //String categ=tcateg.getText();
-        String matiere=tmatiere.getText();
-        String description=tdescription.getText();
-        String image= imagePath;
-         int qte  = tqte.getValue();
-         String categ = combocateg.getValue();
-           if (image.isEmpty()) {
-            // Handle the case where no image is selected
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Image Not Selected");
-            alert.setContentText("Please select an image for the product");
-            alert.showAndWait();
-        } else {
-        product p= new product(nom, prix, qte, categ, matiere, description,image);
-        productService pS=new productService();
-        
-         pS.ajouter(p);
-        
-        Alert alert = new Alert (AlertType.INFORMATION);
-        alert.setTitle("add produit !");
-        alert.setHeaderText("Information");
-        alert.setContentText("produit bien ajouté");
-        alert.showAndWait(); 
-         //Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        //currentStage.close();
+   private void save(MouseEvent event) throws IOException {
+    String nom = tnom.getText();
+    Double prix = Double.parseDouble(tprix.getText());
+    String matiere = tmatiere.getText();
+    String description = tdescription.getText();
+    String image = imagePath;
+    int qte = tqte.getValue();
+    String categ = combocateg.getValue();
 
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("Produits.fxml"));
-            Parent root = loader.load ();
-            ProduitsController PC = loader.getController();
-        // Configurez la nouvelle interface en tant que racine de la scène
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.sizeToScene(); // Redimensionne la scène en fonction de son contenu
+    if (image.isEmpty()) {
+        // Handle the case where no image is selected
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Image Not Selected");
+        alert.setContentText("Please select an image for the product");
+        alert.showAndWait();
+    } else {
+        product p = new product(nom, prix, qte, categ, matiere, description, image);
+        productService pS = new productService();
+
+        pS.ajouter(p);
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Add Product");
+        alert.setHeaderText("Information");
+        alert.setContentText("Product added successfully");
+        alert.showAndWait();
+
+        // Load the Produits.fxml file after adding the product
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Produits.fxml"));
+        Parent root = loader.load();
+        ProduitsController PC = loader.getController();
+        
+        // Configure the new scene and show it
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.sizeToScene();
+        
+        // Refresh the table in ProduitsController
+        PC.refreshTable();
     }
+}
+
             
-    }
+    
  
     
    /* public void getStage (Stage stage){

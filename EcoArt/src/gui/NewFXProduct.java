@@ -23,7 +23,7 @@ public class NewFXProduct extends Application {
      public void start(Stage primaryStage) {
       
         try {
-            Parent root =FXMLLoader.load(getClass().getResource("Produits.fxml"));
+            Parent root =FXMLLoader.load(getClass().getResource("boutique.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setTitle("Produit!");
             primaryStage.setScene(scene);

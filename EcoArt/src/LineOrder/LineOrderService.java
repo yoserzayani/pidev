@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import product.product;
 
 /**
  *
@@ -158,7 +159,12 @@ public LineOrder chercher (LineOrder L){
        }
        return retour ; 
     }
-    
+    public void calculsubTotal(){
+        product p = new product();
+        LineOrder LO = new LineOrder();
+        double subTotal= p.getPrix() * LO.getQuantite();
+        
+    }
 
     
 }  

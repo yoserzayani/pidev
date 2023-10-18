@@ -31,6 +31,17 @@ public class product {
         this.description = description;
         this.image = image;
     }
+
+    public product(long id_pdts, String nom, double prix, int qte, String categ, String matiere, String description, String image) {
+        this.id_pdts = id_pdts;
+        this.nom = nom;
+        this.prix = prix;
+        this.qte = qte;
+        this.categ = categ;
+        this.matiere = matiere;
+        this.description = description;
+        this.image = image;
+    }
     
    
     
