@@ -13,40 +13,27 @@ import java.util.Objects;
  */
 public class LineOrder {
     
-    
-private int orderId;
-private int id_pdts;
+private int id_o;
 private String productName;
 private int quantite;
-private float subTotal;
-private float remise;
+private double prix;
 
-    public LineOrder(int orderId, int id_pdts, String productName, int quantite, float subTotal, float remise) {
-        this.orderId = orderId;
-        this.id_pdts = id_pdts;
+    public LineOrder(int id_o,String productName, int quantite, double prix) {
+        this.id_o=id_o;
         this.productName = productName;
         this.quantite = quantite;
-        this.subTotal = subTotal;
-        this.remise = remise;
+        this.prix = prix;
+    }
+
+    public int getId_o() {
+        return id_o;
+    }
+
+    public void setId_o(int id_o) {
+        this.id_o = id_o;
     }
 
     public LineOrder() {
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-    public int getId_pdts() {
-        return id_pdts;
-    }
-
-    public void setId_pdts(int id_pdts) {
-        this.id_pdts = id_pdts;
     }
 
     public String getProductName() {
@@ -65,21 +52,55 @@ private float remise;
         this.quantite = quantite;
     }
 
-    public float getSubTotal() {
-        return subTotal;
+    public double getPrix() {
+        return prix;
     }
 
-    public void setSubTotal(float subTotal) {
-        this.subTotal = subTotal;
+    public void setPrix(double prix) {
+        this.prix = prix;
     }
 
-    public float getRemise() {
-        return remise;
+   
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final LineOrder other = (LineOrder) obj;
+        if (this.quantite != other.quantite) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.prix) != Double.doubleToLongBits(other.prix)) {
+            return false;
+        }
+        if (!Objects.equals(this.productName, other.productName)) {
+            return false;
+        }
+        return true;
     }
 
-    public void setRemise(float remise) {
-        this.remise = remise;
+    public LineOrder(String productName, int quantite, double prix) {
+        this.productName = productName;
+        this.quantite = quantite;
+        this.prix = prix;
     }
+
+ 
+
+
+    @Override
+    public String toString() {
+        return "LineOrder{" + "productName=" + productName + ", quantite=" + quantite + ", prix=" + prix + '}';
+    }
+
+
+    
 
     
 }

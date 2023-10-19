@@ -117,11 +117,11 @@ public product chercher (product p){
         
         return 0;
     }
-@Override
-    public product modifier (product p, product p1) {
+//@Override
+   /* public product modifier (product p, product p1) {
     
-   String req = "UPDATE `product` SET idU = ? `nom` = ?, `prix` = ?, `qte` = ?, `categ` = ?, `matiere` = ?, "
-           + "`description` = ? WHERE `product`.`id_pdts` = ? ;"; 
+   String req = "UPDATE `product` SET `nom` = ?, `prix` = ?, `qte` = ?, `categ` = ?, `matiere` = ?, "
+           + "`description` = ? WHERE `product`.`idPdts` = ? ;"; 
    try {
    
        PreparedStatement prepStat = mycnx.prepareStatement(req);
@@ -144,7 +144,35 @@ public product chercher (product p){
         }
         return p1;
    
-    }    
+    }
+*/
+    public product modifier(product editedProduct) {
+    // Assuming you have a database connection and prepared statements
+    try {
+        // Replace these lines with your database update logic
+        String updateQuery = "UPDATE product SET nom = ?, prix = ?, qte = ?, categ = ?, matiere = ?, description = ? WHERE idPdts = ?";
+        PreparedStatement preparedStatement = mycnx.prepareStatement(updateQuery);
+
+        preparedStatement.setString(1, editedProduct.getNom());
+        preparedStatement.setDouble(2, editedProduct.getPrix());
+        preparedStatement.setInt(3, editedProduct.getQte());
+        preparedStatement.setString(4, editedProduct.getCateg());
+        preparedStatement.setString(5, editedProduct.getMatiere());
+        preparedStatement.setString(6, editedProduct.getDescription());
+        preparedStatement.setLong(7, editedProduct.getId_pdts()); // Assuming you have an ID field for the record
+
+        preparedStatement.executeUpdate();
+
+        // Close resources and handle exceptions as needed
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle the exception appropriately
+        
+    }
+    return editedProduct;
+    }
+
+
 @Override
     public List<product>getAllProducts(){
         
@@ -200,6 +228,25 @@ public product chercher (product p){
          
     }*/
   
+    
+    public int unicProduct(String nom){
+        String req="select * from product where nom= ?;";
+        
+        try {
+            PreparedStatement prepStat = mycnx.prepareStatement(req);
+            
+            prepStat.setString(1, nom);
+            
+            ResultSet rS= prepStat.executeQuery();
+            if(rS.next())
+                return -1;
+        
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        return 0;
+    }
     }
 
   

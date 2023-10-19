@@ -5,53 +5,54 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BoutiqueController">
+<AnchorPane id="AnchorPane" prefHeight="504.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BoutiqueController">
    <children>
-      <AnchorPane layoutX="368.0" layoutY="-7.0" prefHeight="418.0" prefWidth="245.0">
+      <Button fx:id="produit" layoutX="28.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#interfproduit" prefHeight="30.0" prefWidth="117.0" text="Produit" />
+      <Button fx:id="boutique" layoutX="28.0" layoutY="298.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="118.0" text="boutique" />
+      <TableView fx:id="tableOrder" editable="true" layoutX="925.0" layoutY="30.0" prefHeight="200.0" prefWidth="235.0" style="-fx-background-color: #FAE7CF; -fx-border-color: #B3892B;">
+        <columns>
+          <TableColumn fx:id="productName" prefWidth="90.40008544921875" text="Nom Produit" />
+          <TableColumn fx:id="quantite" onEditStart="#qteModif" prefWidth="75.9998779296875" text="Quantité" />
+            <TableColumn fx:id="prix" prefWidth="59.2000732421875" text="Prix" />
+        </columns>
+      </TableView>
+      <Button fx:id="btncommander" layoutX="931.0" layoutY="339.0" mnemonicParsing="false" onMouseClicked="#commander" prefHeight="30.0" prefWidth="227.0" style="-fx-background-color: #B3892B;" text="commander" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="931.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="339.0" />
+      <Button fx:id="btnmodif" layoutX="939.0" layoutY="402.0" mnemonicParsing="false" onMouseClicked="#modif" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #B3892B;" text="modifier " AnchorPane.rightAnchor="141.0" />
+      <Label fx:id="mtotal" layoutX="1080.0" layoutY="257.0" prefHeight="16.0" prefWidth="95.0" text="0.0dt">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="964.0" layoutY="257.0" text="Total :" AnchorPane.leftAnchor="964.0" AnchorPane.topAnchor="257.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnsupp" layoutX="1060.0" layoutY="402.0" mnemonicParsing="false" onMouseClicked="#delete" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #B3892B;" text="supprimer" AnchorPane.leftAnchor="1060.0" AnchorPane.topAnchor="402.0" />
+      <AnchorPane layoutX="151.0" layoutY="-11.0" prefHeight="504.0" prefWidth="750.0">
          <children>
-            <TableView fx:id="tableOrder" layoutX="11.0" layoutY="30.0" prefHeight="200.0" prefWidth="222.0" style="-fx-background-color: #FAE7CF; -fx-border-color: #B3892B;">
-              <columns>
-                <TableColumn fx:id="productName" prefWidth="81.5999755859375" text="Nom Produit" />
-                <TableColumn fx:id="quantite" prefWidth="68.79998779296875" text="Quantité" />
-                  <TableColumn fx:id="prix" prefWidth="75.0" text="Prix" />
-              </columns>
-            </TableView>
-            <Button fx:id="btncommander" layoutX="11.0" layoutY="324.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="222.0" style="-fx-background-color: #B3892B;" text="commander" />
-            <Button fx:id="btnmodif" layoutX="146.0" layoutY="373.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #B3892B;" text="modifier " />
-            <Button fx:id="btnsupp" layoutX="14.0" layoutY="373.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #B3892B;" text="supprimer" />
-            <Label layoutX="85.0" layoutY="250.0" text="Total :">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </Label>
-            <Label fx:id="mtotal" layoutX="137.0" layoutY="250.0" prefHeight="15.0" prefWidth="42.0" text="0.0dt">
-               <font>
-                  <Font size="11.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="AnchorScroll" layoutX="8.0" layoutY="5.0" prefHeight="401.0" prefWidth="352.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="248.0" AnchorPane.topAnchor="5.0">
-         <children>
-            <ScrollPane fx:id="menu_scrollPane" prefHeight="424.0" prefWidth="344.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0">
+            <ScrollPane layoutX="13.0" layoutY="-10.0" prefHeight="513.0" prefWidth="701.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="36.0" AnchorPane.topAnchor="-10.0">
                <content>
-                  <ScrollPane>
-                     <content>
-                        <GridPane fx:id="menu_gridPane" prefHeight="363.0" prefWidth="314.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
+                  <GridPane fx:id="menu_gridPane" prefHeight="686.0" prefWidth="738.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                  </GridPane>
                </content>
             </ScrollPane>
          </children>
       </AnchorPane>
+      <ImageView fitHeight="237.0" fitWidth="317.0" layoutX="-83.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/o-removebg-preview.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -7,6 +7,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,15 +20,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import product.product;
 import product.productService;
 
@@ -54,8 +61,6 @@ public class ProduitsController implements Initializable {
     private TableColumn<product, String> description;
     @FXML
     private Button supprimer;
-    @FXML
-    private Button Modifier;
     // private Button ajouter;
     @FXML
     private Button btnAjouter;
@@ -77,19 +82,19 @@ public class ProduitsController implements Initializable {
     @Override
 
     public void initialize(URL url, ResourceBundle rb) {
-
+       refreshTable();
+        tableProduit.setEditable(true);
+        nom.setOnEditCommit(this::nomP);
+        prix.setOnEditCommit(this::prixP);
+        qte.setOnEditCommit(this::qteP);
+        categ.setOnEditCommit(this::categP);
+        matiere.setOnEditCommit(this::matP);
+        description.setOnEditCommit(this::descP);
         //  pS.refresh(tableProduit, nom, prix, qte, categ, matiere, description);
-        refreshTable();
+        
         //menuDisplayCard();
     }
 
-    /*public void affiche (TableColumn<product,String> nom,TableColumn<product, Double> prix,TableColumn<product, Integer> qte,
-            TableColumn<product,String> categ,TableColumn<product,String> matiere,TableColumn<product,String> description) {
-    }*/
-    @FXML
-    private void modifierP(MouseEvent event) {
-
-    }
 
     @FXML
     private void ajouterP(MouseEvent event) {
@@ -115,6 +120,7 @@ public class ProduitsController implements Initializable {
 
     public void refreshTable() {
         // Implement your code to refresh the TableView here
+        
         ObservableList<product> productList = FXCollections.observableArrayList(pS.getAllProducts());
 
         nom.setCellValueFactory(new PropertyValueFactory<product, String>("nom"));
@@ -124,20 +130,41 @@ public class ProduitsController implements Initializable {
         matiere.setCellValueFactory(new PropertyValueFactory<product, String>("matiere"));
         description.setCellValueFactory(new PropertyValueFactory<product, String>("description"));
         idPdts.setCellValueFactory(new PropertyValueFactory<product, Integer>("idPdts"));
+        
+        //edit collumns
+             nom.setCellFactory(TextFieldTableCell.forTableColumn());
+            prix.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+            qte.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            categ.setCellFactory(TextFieldTableCell.forTableColumn());
+            matiere.setCellFactory(TextFieldTableCell.forTableColumn());
+            description.setCellFactory(TextFieldTableCell.forTableColumn());
 
         tableProduit.setItems(productList);
     }
 
     @FXML
     private void supprimerP(ActionEvent event) {
-        product p = tableProduit.getSelectionModel().getSelectedItem();
-        if (p != null) {
+      
+    product p = tableProduit.getSelectionModel().getSelectedItem();
+    if (p != null) {
+        // Create a confirmation dialog
+        Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation");
+        confirmationAlert.setHeaderText("Are you sure you want to remove this product?");
+        confirmationAlert.setContentText("Click OK to remove the product or Cancel to keep it.");
+
+        // Show the confirmation dialog and wait for the user's response
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // User clicked OK, proceed with the deletion
             ObservableList<product> data = tableProduit.getItems();
-            int result = pS.supprimer(p);
-            System.out.println(result);
+            int deleteResult = pS.supprimer(p);
+            System.out.println(deleteResult);
             data.remove(p);
             refreshTable();
         }
+    }
 
     }
 
@@ -186,4 +213,88 @@ private void Menu(MouseEvent event) throws IOException {
     newStage.show();
 }
 
+@FXML
+private void nomP(TableColumn.CellEditEvent<product, String> event) {
+    String newValue = event.getNewValue();
+    product editedProduct = event.getRowValue();
+
+    if (editedProduct != null) {
+        String oldValue = editedProduct.getNom(); // Get the original value before editing
+        product originalProduct = new product(); // Create a copy of the product
+        originalProduct.setNom(oldValue); // Set the original value on the copy
+        editedProduct.setNom(newValue);
+        //pS.modifier(originalProduct, editedProduct);
+        // Pass the original and edited products to the modifier method
+    }
+     pS.modifier(editedProduct);
 }
+@FXML
+private void prixP(TableColumn.CellEditEvent<product, Double> event) {
+    Double newValue = event.getNewValue();
+    product editedProduct = event.getRowValue();
+    if (editedProduct != null && newValue != null) {
+        Double oldValue = editedProduct.getPrix(); // Get the original value before editing
+        product originalProduct = new product(); // Create a copy of the product
+        originalProduct.setPrix(oldValue); // Set the original value on the copy
+        editedProduct.setPrix(newValue);
+       // pS.modifier(originalProduct, editedProduct); // Pass the original and edited products to the modifier method
+    }
+     pS.modifier(editedProduct);
+}
+
+
+// Repeat the same pattern for other columns...
+
+
+               
+    @FXML
+private void qteP(TableColumn.CellEditEvent<product, Integer> event) {
+   product editedProduct = event.getRowValue();
+    
+    if (editedProduct != null) {
+        Integer newValue = event.getNewValue();
+        if (newValue != null) {
+            editedProduct.setQte(newValue);
+            
+        }}
+    pS.modifier(editedProduct);
+}
+@FXML
+private void categP(TableColumn.CellEditEvent<product, String> event) {
+    String newValue = event.getNewValue();
+    product editedProduct = event.getRowValue();
+    
+    if (editedProduct != null) {
+        editedProduct.setCateg(newValue);
+        // You can also save changes to the database if needed
+    }
+     pS.modifier(editedProduct);
+     //refreshTable();
+  
+}
+@FXML
+private void matP(TableColumn.CellEditEvent<product, String> event) {
+    String newValue = event.getNewValue();
+    product editedProduct = event.getRowValue();
+    
+    if (editedProduct != null) {
+        editedProduct.setMatiere(newValue);
+        
+        // You can also save changes to the database if needed
+    }
+    pS.modifier(editedProduct);
+}
+@FXML
+private void descP(TableColumn.CellEditEvent<product, String> event) {
+    String newValue = event.getNewValue();
+    product editedProduct = event.getRowValue();
+    
+    if (editedProduct != null) {
+        editedProduct.setDescription(newValue);
+        // You can also save changes to the database if needed
+    }
+    pS.modifier(editedProduct);
+
+}
+}
+

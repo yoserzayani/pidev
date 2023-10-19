@@ -18,10 +18,19 @@ public class commande {
     String nomC;
     int id_client;
     String adresse;
-    LocalDate date = LocalDate.now();
+    LocalDate date ;
     int numTel;
     String email; 
-    double Total;
+
+    public commande(String nomC, int id_client, String adresse, LocalDate date, int numTel, String email) {
+        this.nomC = nomC;
+        this.id_client = id_client;
+        this.adresse = adresse;
+        this.date = date;
+        this.numTel = numTel;
+        this.email = email;
+    }
+   
 
     public commande(String nomC, int id_client, String adresse, int numTel, String email) {
         this.nomC = nomC;

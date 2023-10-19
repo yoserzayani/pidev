@@ -7,6 +7,7 @@ package commande;
 
 import connexion.MyConnection;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +38,8 @@ public class commandeService {
     prepStat.setString(1, c.getNomC());
     prepStat.setInt(2,c.getId_client());
     prepStat.setString (3,c.getAdresse());
-    prepStat.setObject(4, c.getDate());
+    Date sqlDate = Date.valueOf(c.getDate());
+      prepStat.setDate(4, sqlDate);
     prepStat.setLong(5,c.getNumTel());
     prepStat.setString(6,c.getEmail());
     int rowsAffected =  prepStat.executeUpdate();
@@ -60,7 +62,8 @@ public commande chercher (commande c){
           prepStat.setString(1, c.getNomC());
           prepStat.setInt(2,c.getId_client());
           prepStat.setString (3,c.getAdresse());
-         prepStat.setObject(4, c.getDate());
+             Date sqlDate = Date.valueOf(c.getDate());
+      prepStat.setDate(4, sqlDate);
           prepStat.setInt(5,c.getNumTel());
           prepStat.setString(6,c.getEmail());
         
@@ -119,7 +122,8 @@ public commande chercher (commande c){
           prepStat.setString(1, c1.getNomC());
           prepStat.setInt(2,c1.getId_client());
           prepStat.setString (3,c1.getAdresse());
-          prepStat.setObject(4, c1.getDate());
+             Date sqlDate = Date.valueOf(c.getDate());
+      prepStat.setDate(4, sqlDate);
           prepStat.setInt(5,c1.getNumTel());
           prepStat.setString(6,c1.getEmail());
           prepStat.setLong(7,c.getId_c());
@@ -143,10 +147,14 @@ public commande chercher (commande c){
         ResultSet result = prepStat.executeQuery();
         while (result.next()){
             commande cTr =new commande();
-         cTr.setNomC(result.getString("numC"));
+         cTr.setNomC(result.getString("nomC"));
          cTr.setId_client(result.getInt("id_client"));
          cTr.setAdresse(result.getString("adresse"));
-         cTr.setDate(result.getObject("date",LocalDate.class));
+         LocalDate localDate = result.getDate("date").toLocalDate();
+          
+           cTr.setDate(localDate);
+
+     
          cTr.setNumTel(result.getInt("numTel"));
          cTr.setEmail(result.getString("email"));
            
@@ -160,6 +168,24 @@ public commande chercher (commande c){
        return retour ; 
     }
     
-
+ public int unicId_c(int id){
+        String req="select * from commande where id_client = ?;";
+        
+        try {
+            PreparedStatement prepStat = mycnx.prepareStatement(req);
+            
+            prepStat.setInt(1, id);
+            
+            ResultSet rS= prepStat.executeQuery();
+            if(rS.next())
+                return -1;
+        
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        return 0;
+    }
+    }
     
-}  
+

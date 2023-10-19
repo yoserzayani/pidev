@@ -16,6 +16,6 @@ public interface interfaceCRUD <T> {
      public int ajouter(T t);
      public T chercher(T t);
      public int supprimer(T t);
-     public T modifier(T t ,T nouveau);
+    //public T modifier(T t, T y);
       public List<T>getAllProducts();
 }

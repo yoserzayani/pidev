@@ -52,7 +52,7 @@ public class AjoutProduitController implements Initializable {
     private TextField tnom;
     @FXML
     private TextField tprix;
-    private TextField tcateg;
+
     @FXML
     private TextField tmatiere;
     @FXML
@@ -68,6 +68,7 @@ public class AjoutProduitController implements Initializable {
     private ComboBox<String> combocateg;
     private String imagePath;
     ObservableList<String> List = FXCollections.observableArrayList("Poterie","Tapiserie","Nattes","Habillement","Cuisine","Céramique");
+    
     @Override
     
     public void initialize(URL url, ResourceBundle rb) {
@@ -76,7 +77,8 @@ public class AjoutProduitController implements Initializable {
        valueFactory.setValue(1);
         tqte.setValueFactory(valueFactory);
         combocateg.setItems(List);
-     
+        TextField textField = new TextField();
+        textField.setDisable(true);
         
     }    
 
@@ -89,8 +91,14 @@ public class AjoutProduitController implements Initializable {
     String image = imagePath;
     int qte = tqte.getValue();
     String categ = combocateg.getValue();
-
-    if (image.isEmpty()) {
+    productService pS = new productService();
+    if (pS.unicProduct(nom) == -1) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Product Name Not Unique");
+        alert.setContentText("A product with the same name already exists. Please choose a different name.");
+        alert.showAndWait();}
+    else if (image.isEmpty()) {
         // Handle the case where no image is selected
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
@@ -99,7 +107,7 @@ public class AjoutProduitController implements Initializable {
         alert.showAndWait();
     } else {
         product p = new product(nom, prix, qte, categ, matiere, description, image);
-        productService pS = new productService();
+        
 
         pS.ajouter(p);
 
@@ -134,7 +142,7 @@ public class AjoutProduitController implements Initializable {
     }*/
 
     @FXML
-    private void upload(MouseEvent event) {
+   private void upload(MouseEvent event) {
            FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
 
@@ -143,7 +151,7 @@ public class AjoutProduitController implements Initializable {
             Image image = new Image(file.toURI().toString());
             imageU.setImage(image);
 
-            imagePath = file.toURI().toString();
+            imagePath = file.getAbsolutePath();
         }
     }
     

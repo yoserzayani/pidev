@@ -9,25 +9,24 @@
 
 <AnchorPane id="AnchorPane" prefHeight="586.0" prefWidth="952.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProduitsController">
    <children>
-      <TableView fx:id="tableProduit" layoutX="311.0" layoutY="93.0" prefHeight="200.0" prefWidth="556.0" style="-fx-background-color: #FAE7CF;">
+      <TableView fx:id="tableProduit" editable="true" layoutX="358.0" layoutY="141.0" prefHeight="200.0" prefWidth="556.0" style="-fx-background-color: #FAE7CF;">
         <columns>
-          <TableColumn fx:id="nom" prefWidth="75.0" text="NOM" />
-          <TableColumn fx:id="prix" prefWidth="75.0" text="PRIX" />
-            <TableColumn fx:id="qte" prefWidth="75.0" text="QUANTITE" />
-            <TableColumn fx:id="categ" prefWidth="75.0" text="CATEGORIE " />
-            <TableColumn fx:id="matiere" prefWidth="75.0" text="MATIERE" />
-            <TableColumn fx:id="description" prefWidth="102.40001220703124" text="DESCRIPTION" />
+          <TableColumn fx:id="nom" onEditStart="#nomP" prefWidth="75.0" text="NOM" />
+          <TableColumn fx:id="prix" onEditStart="#prixP" prefWidth="75.0" text="PRIX" />
+            <TableColumn fx:id="qte" onEditStart="#qteP" prefWidth="75.0" text="QUANTITE" />
+            <TableColumn fx:id="categ" onEditStart="#categP" prefWidth="75.0" text="CATEGORIE " />
+            <TableColumn fx:id="matiere" onEditStart="#matP" prefWidth="75.0" text="MATIERE" />
+            <TableColumn fx:id="description" onEditStart="#descP" prefWidth="102.40001220703124" text="DESCRIPTION" />
             <TableColumn fx:id="idPdts" prefWidth="75.0" text="idPdts" />
         </columns>
       </TableView>
-      <Button fx:id="supprimer" layoutX="770.0" layoutY="385.0" mnemonicParsing="false" onAction="#supprimerP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Supprimer " textFill="WHITE" />
-      <Button fx:id="Modifier" layoutX="642.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#modifierP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Modifier" textFill="WHITE" />
-      <Button fx:id="btnAjouter" layoutX="507.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#ajouterP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Ajouter" textFill="WHITE" />
-      <ImageView fitHeight="242.0" fitWidth="425.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="supprimer" layoutX="745.0" layoutY="361.0" mnemonicParsing="false" onAction="#supprimerP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Supprimer " textFill="WHITE" />
+      <Button fx:id="btnAjouter" layoutX="611.0" layoutY="361.0" mnemonicParsing="false" onMouseClicked="#ajouterP" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Ajouter" textFill="WHITE" />
+      <ImageView fitHeight="242.0" fitWidth="425.0" layoutX="-32.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/o-removebg-preview.png" />
          </image>
       </ImageView>
-      <Button fx:id="menu" layoutX="40.0" layoutY="161.0" mnemonicParsing="false" onMouseClicked="#Menu" text="menu " />
+      <Button fx:id="menu" layoutX="24.0" layoutY="314.0" mnemonicParsing="false" onMouseClicked="#Menu" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #C87A19;" text="Boutique " textFill="WHITE" />
    </children>
 </AnchorPane>

@@ -13,6 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import product.product;
 
 /**
@@ -20,7 +27,8 @@ import product.product;
  * @author User
  */
 public class LineOrderService {
-     MyConnection cnx= MyConnection.getInstance();
+    
+    MyConnection cnx= MyConnection.getInstance();
     Connection mycnx = cnx.getConnection();
     
     
@@ -29,41 +37,39 @@ public class LineOrderService {
          
     if(this.chercher(L)!=null)
             return -1; 
-    String req = "INSERT INTO LineOrder (orderId,id_pdts,productName,quantite,subTotal,remise)" + "VALUES (?,?,?,?,?,?);";
+    
+    String req = "INSERT INTO lineorder (productName ,quantite ,prix )" + "VALUES (?,?,?);";
     
     try{
         
     PreparedStatement prepStat = mycnx.prepareStatement(req);
     
-    prepStat.setInt(1, L.getOrderId());
-    prepStat.setInt(2,L.getId_pdts());
-    prepStat.setString (3,L.getProductName());
-    prepStat.setInt (4,L.getQuantite());
-    prepStat.setFloat(5,L.getSubTotal());
-    prepStat.setFloat(6,L.getRemise());
+   
+    
+    prepStat.setString (1,L.getProductName());
+    prepStat.setInt (2,L.getQuantite());
+    prepStat.setDouble(3,L.getPrix());
     int rowsAffected =  prepStat.executeUpdate();
 
       } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
         
-        
+         List<LineOrder> list = getAllOrders();
+         
         return 0; 
 
 }
 
 public LineOrder chercher (LineOrder L){
   
-        String req ="SELECT * FROM  LineOrder WHERE id_pdts LIKE ? AND productName LIKE ? AND quantite LIKE ? AND subTotal"
-                + " LIKE ? AND remise LIKE ? ; ";
+        String req =" SELECT * FROM  lineorder WHERE productName LIKE ? AND quantite LIKE ? AND prix LIKE ? ";
         LineOrder LO = new LineOrder();
       try {
         PreparedStatement prepStat = mycnx.prepareStatement(req);
-          prepStat.setInt(1,L.getId_pdts());
-          prepStat.setString (2,L.getProductName());
-          prepStat.setInt (3,L.getQuantite());
-          prepStat.setFloat(4,L.getSubTotal());
-          prepStat.setFloat(5,L.getRemise());
+        prepStat.setString (1,L.getProductName());
+        prepStat.setInt (2,L.getQuantite());
+        prepStat.setDouble(3,L.getPrix());
         
        // prepStat.setString(7, p.getDescription());
         
@@ -72,11 +78,9 @@ public LineOrder chercher (LineOrder L){
          
           if(!result.next())
                 return null;
-         LO.setId_pdts(result.getInt("id_pdts"));
          LO.setProductName(result.getString("productName"));
          LO.setQuantite(result.getInt("quantite"));
-         LO.setSubTotal(result.getFloat("subTotal"));
-         LO.setRemise(result.getInt("remise"));
+         LO.setPrix(result.getDouble("prix"));
        
          //pTr.setDescription(result.getString("desc"));
          
@@ -90,10 +94,10 @@ public LineOrder chercher (LineOrder L){
 
     public int supprimer(LineOrder L) {
         
-        String req="DELETE FROM commande WHERE OrderId = ?;";
+        String req="DELETE FROM lineorder WHERE productName = ? ;";
         try {
             PreparedStatement prepStat = mycnx.prepareStatement(req);
-            prepStat.setLong(1, L.getOrderId());
+            prepStat.setString (1,L.getProductName());
             int rowsAffected =  prepStat.executeUpdate();
             if(rowsAffected==0)
                 return -1;
@@ -107,22 +111,21 @@ public LineOrder chercher (LineOrder L){
         return 0;
     }
     
-    public LineOrder modifier (LineOrder L , LineOrder L1 ) {
-    
-   String req = "UPDATE `LineOrder` SET  `id_pdts` = ?, `productName` = ?, `quantite` = ?, `subTotal` = ?, `remise` = ?, "
-           + "` WHERE `commande`.`orderId` = ? ;"; 
+    public LineOrder modifier (LineOrder L ) {
+         
+   String req = "UPDATE `lineorder` SET `productName` = ?, `quantite` = ?, `prix` = ?, "
+           + "` WHERE `commande`.`productName` = ? ;"; 
    try {
-   
+       
        PreparedStatement prepStat = mycnx.prepareStatement(req);
    
     
    // prepStat.setLong(1, p1.getId_pdts());
-            prepStat.setInt(1,L1.getId_pdts());
-          prepStat.setString (2,L1.getProductName());
-          prepStat.setInt (3,L1.getQuantite());
-          prepStat.setFloat(4,L1.getSubTotal());
-          prepStat.setFloat(5,L1.getRemise());
-          prepStat.setInt(6, L.getOrderId());
+        prepStat.setString (1,L.getProductName());
+        prepStat.setInt (2,L.getQuantite());
+        prepStat.setDouble(3,L.getPrix());
+        //prepStat.setInt(4, L.getId_o());
+        prepStat.setString (4,L.getProductName());
           
         int rowsAffected =  prepStat.executeUpdate();
     
@@ -130,43 +133,83 @@ public LineOrder chercher (LineOrder L){
       } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return L1;
+        return L;
    
     }    
     
-    public List<LineOrder>getAllOrderById(){
-        
-        List<LineOrder> retour= new ArrayList();
-        String req ="select * from `LineOrder` ";
-       try{
-           
+    public List<LineOrder> getAllOrders() {
+    List<LineOrder> retour = new ArrayList<>();
+    String req = "SELECT * FROM lineorder";
+
+    try {
         PreparedStatement prepStat = mycnx.prepareStatement(req);
         ResultSet result = prepStat.executeQuery();
-        while (result.next()){
-            LineOrder LO =new LineOrder();
-        LO.setId_pdts(result.getInt("id_pdts"));
-         LO.setProductName(result.getString("productName"));
-         LO.setQuantite(result.getInt("quantite"));
-         LO.setSubTotal(result.getFloat("subTotal"));
-         LO.setRemise(result.getInt("remise"));
-           
-            retour.add(LO);
-            
-       }
-       }
-       catch (SQLException ex){
-           System.out.println(ex.getMessage());
-       }
-       return retour ; 
+
+        while (result.next()) {
+            LineOrder lTr = new LineOrder();
+            lTr.setId_o(result.getInt("id_o"));
+            lTr.setProductName(result.getString("productName"));
+            lTr.setQuantite(result.getInt("quantite"));
+            lTr.setPrix(result.getDouble("prix"));
+            retour.add(lTr);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(LineOrderService.class.getName()).log(Level.SEVERE, null, ex);
     }
-    public void calculsubTotal(){
+
+    return retour;
+}
+
+ 
+   /* public void calculsubTotal(){
         product p = new product();
         LineOrder LO = new LineOrder();
         double subTotal= p.getPrix() * LO.getQuantite();
         
-    }
+    }*/
 
+ 
+   public void affiche(TableView<LineOrder> tableView, TableColumn<LineOrder, String> productNameColumn,
+    TableColumn<LineOrder, Integer> quantiteColumn, TableColumn<LineOrder, Double> prixColumn) {
+    List<LineOrder> allOrders = getAllOrders();
+    if (allOrders != null) {
+        ObservableList<LineOrder> orderList = FXCollections.observableArrayList(allOrders);
+        tableView.setItems(orderList);
+    }
+    productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+    quantiteColumn.setCellValueFactory(new PropertyValueFactory<>("quantite"));
+    prixColumn.setCellValueFactory(new PropertyValueFactory<>("prix"));
     
+     ObservableList<LineOrder> orderList = FXCollections.observableArrayList(allOrders);
+     
+        tableView.setItems(orderList);
+        
+    
+    
+}
+   public double calculateTotalPrice() {
+       
+            double total = 0.0;
+            String req = "SELECT prix, quantite FROM lineorder";
+             try {
+            PreparedStatement prepStat = mycnx.prepareStatement(req);
+            ResultSet result = prepStat.executeQuery();
+
+            while (result.next()) {
+                double prix = result.getDouble("prix");
+                int quantite = result.getInt("quantite");
+                total += prix * quantite;
+            }
+            
+            
+            return total;
+        } catch (SQLException ex) {
+            Logger.getLogger(LineOrderService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return total;
+    
+   }
+
 }  
 
 
