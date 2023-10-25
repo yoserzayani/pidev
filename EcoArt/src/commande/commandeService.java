@@ -215,7 +215,7 @@ public List<commande> getLastLine(){
     
 
     List<commande> retour= new ArrayList();
-        String req ="SELECT adresse,numTel,total FROM commande ORDER BY id_c DESC LIMIT 1;";
+        String req ="SELECT nomC,id_c,adresse,numTel,total FROM commande ORDER BY id_c DESC LIMIT 1;";
       
         try{
            
@@ -223,8 +223,9 @@ public List<commande> getLastLine(){
         ResultSet result = prepStat.executeQuery();
         while (result.next()){
             commande cTr =new commande();
-         cTr.setAdresse(result.getString("adresse"));
-         
+            cTr.setId_c(result.getLong("id_c"));
+            cTr.setNomC(result.getString("nomC"));    
+            cTr.setAdresse(result.getString("adresse")); 
          cTr.setNumTel(result.getInt("numTel"));
          cTr.setTotal(result.getDouble("total"));
            
@@ -237,14 +238,14 @@ public List<commande> getLastLine(){
        }
        return retour ; 
     }
-public List<commande> getOrderHistoryWithLineOrders() {
+/*public List<commande> getOrderHistoryWithLineOrders() {
     List<commande> orderHistory = new ArrayList<>();
     Map<Integer, commande> ordersMap = new HashMap<>();
 
-    String query = "SELECT commande.id_c, commande.date, lineorder.productName, lineorder.quantite, lineorder.prix " +
+    String query = "INSERT INTO historique (SELECT commande.id_c, commande.date, lineorder.productName, lineorder.quantite, lineorder.prix " +
             "FROM commande " +
             "JOIN lineorder ON commande.id_c = lineorder.id_c " +
-            "ORDER BY commande.date DESC";
+            "ORDER BY commande.date DESC )";
 
     try {
         PreparedStatement prepStat = mycnx.prepareStatement(query);
@@ -275,8 +276,47 @@ public List<commande> getOrderHistoryWithLineOrders() {
     }
 
     return orderHistory;
+}*/
+public List<orderItems> insertJoinResultIntoTableAndReturnList() {
+    List<orderItems> insertedData = new ArrayList<>();
+
+    String insertQuery = "INSERT INTO historique (numC, dateOrder, Product, quantite, prix) " +
+            "SELECT commande.id_c, commande.date, lineorder.productName, lineorder.quantite, lineorder.prix " +
+            "FROM commande " +
+            "JOIN lineorder ON commande.id_c = lineorder.id_c " +
+            "ORDER BY commande.date DESC";
+
+    String selectQuery = "SELECT *FROM historique";
+
+    try {
+        // Insert data into target_table
+        PreparedStatement insertStatement = mycnx.prepareStatement(insertQuery);
+        insertStatement.executeUpdate();
+
+        // Retrieve the inserted data
+        PreparedStatement selectStatement = mycnx.prepareStatement(selectQuery);
+        ResultSet resultSet = selectStatement.executeQuery();
+
+        while (resultSet.next()) {
+            long orderId = resultSet.getLong("numC");
+            LocalDate orderDate = resultSet.getDate("dateOrder").toLocalDate();
+            String productName = resultSet.getString("Product");
+            int quantity = resultSet.getInt("quantite");
+            double price = resultSet.getDouble("prix");
+
+            orderItems orderItem = new orderItems(orderId, orderDate, productName, quantity, price);
+            insertedData.add(orderItem);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return insertedData;
 }
+
 }
+
+
  
 
 

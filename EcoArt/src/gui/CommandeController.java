@@ -41,6 +41,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import commande.orderItems;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +53,23 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.FileChooser;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+
+
+import java.io.BufferedReader;
+import static java.io.FileDescriptor.in;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import static java.lang.System.in;
+
+import java.net.URI;
+import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.util.Base64;
+import static javax.management.Query.in;
 
 /**
  * FXML Controller class
@@ -73,7 +91,7 @@ public class CommandeController implements Initializable {
     @FXML
     private Button btnpayer;
     @FXML
-    private TableView<commande> TableCommande;
+    private TableView<orderItems> TableCommande;
    /* private TableColumn<commande,String> NomC;
     private TableColumn<commande,Long> id;
     private TableColumn<commande, String> adresse;
@@ -94,15 +112,15 @@ public class CommandeController implements Initializable {
     @FXML
     private Button confirmer;
     @FXML
-    private TableColumn<commande, Date> orderDate;
+    private TableColumn<orderItems, Date> orderDate;
     @FXML
-    private TableColumn<LineOrder, String> product;
+    private TableColumn<orderItems, String> product;
     @FXML
-    private TableColumn<LineOrder, Integer> qte;
+    private TableColumn<orderItems, Integer> qte;
     @FXML
-    private TableColumn<LineOrder, Double> prix;
+    private TableColumn<orderItems, Double> prix;
     @FXML
-    private TableColumn<commande,Long> numOrder;
+    private TableColumn<orderItems,Long> numOrder;
     /**
      * Initializes the controller class.
      */
@@ -181,15 +199,15 @@ public class CommandeController implements Initializable {
      
     }
     public void refresh (){
-           ObservableList<commande> commandeList = FXCollections.observableArrayList(cs.getOrderHistoryWithLineOrders());
-        numOrder.setCellValueFactory(new PropertyValueFactory<commande, Long>("id_c"));
-        qte.setCellValueFactory(new PropertyValueFactory<LineOrder, Integer>("quantite"));
-        prix.setCellValueFactory(new PropertyValueFactory<LineOrder, Double>("prix"));
-        orderDate.setCellValueFactory(new PropertyValueFactory<commande, Date>("date"));
-        product.setCellValueFactory(new PropertyValueFactory<LineOrder, String>("productName"));
+           ObservableList<orderItems> order = FXCollections.observableArrayList(cs.insertJoinResultIntoTableAndReturnList());
+        numOrder.setCellValueFactory(new PropertyValueFactory<orderItems, Long>("numC"));
+        qte.setCellValueFactory(new PropertyValueFactory<orderItems, Integer>("quantite"));
+        prix.setCellValueFactory(new PropertyValueFactory<orderItems, Double>("prix"));
+        orderDate.setCellValueFactory(new PropertyValueFactory<orderItems, Date>("date"));
+        product.setCellValueFactory(new PropertyValueFactory<orderItems, String>("Product"));
        
        // total.setCellValueFactory(new PropertyValueFactory<commande,Double>("total"));
-        TableCommande.setItems(commandeList);
+        TableCommande.setItems(order);
         
     }
 
@@ -242,6 +260,7 @@ public class CommandeController implements Initializable {
             newStage.show();
         } catch (IOException ex) {
             Logger.getLogger(PaymentController.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
     }
     
@@ -258,7 +277,43 @@ public class CommandeController implements Initializable {
 
    @FXML
     private void quantity(TableColumn.CellEditEvent<LineOrder, Integer> event) {
-    }
+    }}
+/*public void sms() {
+    commandeService CS = new commandeService();
+    List<commande> lastCommandes = CS.getLastLine();
 
+    if (!lastCommandes.isEmpty()) {
+        commande lastCommande = lastCommandes.get(0);
+        int phoneNumber = lastCommande.getNumTel();
+        long numC = lastCommande.getId_c();
+        
+
+        // Find your Account SID and Token at twilio.com/console
+        String ACCOUNT_SID = "AC953fd44e8941949aab02e7bf21ef4f21";
+        String AUTH_TOKEN = "daae1432b5cb60dd9e72a9b288019fca";
+
+        try {
+            // Initialize the Twilio client
+            Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+            // Create a message
+            Message message = Message.creator(
+                new com.twilio.type.PhoneNumber("whatsapp:+216" + String.valueOf(phoneNumber)),
+                new com.twilio.type.PhoneNumber("whatsapp:+15153936843"),
+                "Mr/Mme X les articles de la commande num " + numC + " vous seront livrés bientôt.\nMerci d'avoir shoppé avec nous.\nEcoArt"
+            ).create();
+
+            // Log a success message with Message SID
+            System.out.println("Message SID: " + message.getSid());
+        } catch (Exception e) {
+            // Handle exceptions by logging the error
+            System.err.println("Error sending WhatsApp message: " + e.getMessage());
+            e.printStackTrace();
+        }
+    } else {
+        System.out.println("No last command found.");
+    }
 }
+*/
+
 

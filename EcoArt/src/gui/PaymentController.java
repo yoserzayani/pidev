@@ -50,13 +50,18 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
- import com.twilio.Twilio;
-import com.twilio.converter.Promoter;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
+
 
 import java.net.URI;
 import java.math.BigDecimal;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class PaymentController implements Initializable {
 
@@ -129,6 +134,7 @@ String cardNumber = numCard.getText();
 String expirationMonth = months.getValue();
 String expirationYear = years.getValue().toString();
  String CVC=cvc.getText();
+ 
 
 Map<String, Object> card = new HashMap<>();
 card.put("number", cardNumber);
@@ -168,6 +174,7 @@ try {
             showPaymentSuccessAlert();
 
             String name = yourname.getText();
+            String recipientEmail =email.getText();
             commandeService CS = new commandeService();
             List<commande> lastCommandes = CS.getLastLine();
 
@@ -176,9 +183,15 @@ try {
                 String address = lastCommande.getAdresse();
                 LineOrderService lS = new LineOrderService();
                 List<LineOrder> lineOrders = lS.getAllOrders();
-
+                long num = lastCommande.getId_c();
+                String numC= String.valueOf(num);
+                    System.out.println(name);
+                    System.out.println(address);
+                    System.out.println(lineOrders);
+                   
                 if (name != null && !name.isEmpty() && address != null && !lineOrders.isEmpty()) {
                     downloadInvoiceAlert(name, address, lineOrders);
+         
                 } else {
                     showDataErrorAlert();
                 }
@@ -346,12 +359,53 @@ try {
             }
         }
     }
- }
-   
- }
+    }}
 
 
-public void sms (){
+    private void sendEmail( String recipientEmail) {
+    String to = recipientEmail;
+    String subject = "Welcome to ";
+    String body = "Dear "  + ",\n\n"
+                  + "Welcome to "  + ". Thank you for your payment. Now you are on your way to new skills!";
+    
+    // Configure your email settings (SMTP server, username, password, etc.)
+    String host = "smtp.gmail.com";
+    String username = "ecoartteampi@gmail.com ";
+    String password = "hoxb htnf agqp blhk";
+    
+    // Send the email using JavaMail API
+    try {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.port", "587"); // Update the port as needed
+        
+        Session session;
+        session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+        
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+        message.setSubject(subject);
+        message.setText(body);
+        
+        Transport.send(message);
+    } catch (MessagingException e) {
+        e.printStackTrace();
+    }
+}
+
+}
+
+
+
+
+/*public void sms (){
   // Find your Account Sid and Token at twilio.com/console
    String ACCOUNT_SID = "AC953fd44e8941949aab02e7bf21ef4f21";
   String AUTH_TOKEN = "3fc8c8c57b301f4eaaa1ae4559716f8d";
@@ -365,4 +419,4 @@ public void sms (){
 
     System.out.println(message.getSid());
   }
-}
+}*/
