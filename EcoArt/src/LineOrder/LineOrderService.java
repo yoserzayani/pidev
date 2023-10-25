@@ -209,6 +209,49 @@ public LineOrder chercher (LineOrder L){
         return total;
     
    }
+ public int deleteAll() {
+        
+        String req="DELETE FROM lineorder ;";
+        try {
+            PreparedStatement prepStat = mycnx.prepareStatement(req);
+           // prepStat.setString (1,L.getProductName());
+            int rowsAffected =  prepStat.executeUpdate();
+            if(rowsAffected==0)
+                return -1;
+            
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        return 0;
+    }
+  public List<LineOrder> getAllOrdersForOrder(int orderId) throws SQLException {
+        List<LineOrder> lineOrders = new ArrayList<>();
+        String query = "SELECT productName, quantite, prix FROM lineorder WHERE id_c = ?";
+    
+        
+        PreparedStatement prepStat = mycnx.prepareStatement(query);
+         ResultSet resultSet = prepStat.executeQuery();
+        // Your database connection
+
+        try {
+            // Your query execution with the orderId parameter
+
+            while (resultSet.next()) {
+                String productName = resultSet.getString("productName");
+                int quantity = resultSet.getInt("quantite");
+                double price = resultSet.getDouble("prix");
+
+                lineOrders.add(new LineOrder(productName, quantity, price));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return lineOrders;
+    }
 
 }  
 

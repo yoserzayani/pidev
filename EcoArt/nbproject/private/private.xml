@@ -5,28 +5,30 @@
         <group>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/boutique.fxml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/NewFXProduct.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/ecoart/EcoArt.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/commande/commande.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/ProduitsController.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/Produits.fxml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/product/productService.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/BoutiqueController.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/product/product.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/payment.fxml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/nbproject/jfx-impl.xml</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/PaymentController.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/PaymentController.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/commande/commandeService.java</file>
+            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/ecoart/EcoArt.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/AjoutProduit.fxml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/Commande.fxml</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/ProduitsController.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/nbproject/build-impl.xml</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/Produits.fxml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/AjoutProduitController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/product/productService.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/connexion/MyConnection.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/Alert/Alert.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/BoutiqueController.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/CommandeController.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/CardProductController.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/product/product.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/image/o-removebg-preview.png</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/LineOrder/LineOrderService.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/nbproject/jfx-impl.xml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/LineOrder/LineOrder.java</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/gui/cardProduct.fxml</file>
             <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/InterfaceCrud/interfaceCRUD.java</file>
-            <file>file:/C:/Users/User/OneDrive/Documents/NetBeansProjects/EcoArt/src/commande/commandeService.java</file>
         </group>
     </open-files>
 </project-private>

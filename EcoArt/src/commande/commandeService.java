@@ -5,15 +5,22 @@
  */
 package commande;
 
+import LineOrder.LineOrder;
+import LineOrder.LineOrderService;
 import connexion.MyConnection;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -30,10 +37,10 @@ public class commandeService {
      public int ajouter (commande c) {
     if(this.chercher(c)!=null)
             return -1; 
-    String req = "INSERT INTO commande (nomC,id_client,adresse,date,numTel,email)" + "VALUES (?,?,?,?,?,?);";
+    String req = "INSERT INTO commande (nomC,id_client,adresse,date,numTel,email,total)" + "VALUES (?,?,?,?,?,?,?);";
     try{
         
-    PreparedStatement prepStat = mycnx.prepareStatement(req);
+    PreparedStatement prepStat = mycnx.prepareStatement(req,Statement.RETURN_GENERATED_KEYS);
     
     prepStat.setString(1, c.getNomC());
     prepStat.setInt(2,c.getId_client());
@@ -42,20 +49,35 @@ public class commandeService {
       prepStat.setDate(4, sqlDate);
     prepStat.setLong(5,c.getNumTel());
     prepStat.setString(6,c.getEmail());
+    prepStat.setDouble(7,c.getTotal());
     int rowsAffected =  prepStat.executeUpdate();
+     long generatedIdC = -1;
+                try (ResultSet generatedKeys = prepStat.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        generatedIdC = generatedKeys.getLong(1); // Get the generated id_c
+                    }
+                }
+                String updateLineOrderSQL = "UPDATE lineorder SET id_c = ? WHERE id_c IS NULL";
+        try (PreparedStatement updateStatement = mycnx.prepareStatement(updateLineOrderSQL)) {
+    updateStatement.setLong(1, generatedIdC); // Replace with the actual order ID
+    updateStatement.executeUpdate();
+}
+          return 0;
+
 
       } catch (SQLException ex) {
             System.out.println(ex.getMessage());
+             return -1; 
         }
         
         
-        return 0; 
+       
 
 }
 
 public commande chercher (commande c){
   
-        String req ="SELECT * FROM  commande WHERE nomC LIKE ? AND id_client LIKE ? AND adresse LIKE ? AND date LIKE ? AND numTel LIKE ? AND email LIKE ? ; ";
+        String req ="SELECT * FROM  commande WHERE nomC LIKE ? AND id_client LIKE ? AND adresse LIKE ? AND date LIKE ? AND numTel LIKE ? AND email LIKE ? AND total LIKE ? ; ";
         commande cTr = new commande();
       try {
         PreparedStatement prepStat = mycnx.prepareStatement(req);
@@ -66,6 +88,7 @@ public commande chercher (commande c){
       prepStat.setDate(4, sqlDate);
           prepStat.setInt(5,c.getNumTel());
           prepStat.setString(6,c.getEmail());
+          prepStat.setDouble(7,c.getTotal());
         
        // prepStat.setString(7, p.getDescription());
         
@@ -80,6 +103,7 @@ public commande chercher (commande c){
          cTr.setDate(result.getObject("date",LocalDate.class));
          cTr.setNumTel(result.getInt("numTel"));
          cTr.setEmail(result.getString("email"));
+         cTr.setTotal(result.getDouble("total"));
          //pTr.setDescription(result.getString("desc"));
          
         
@@ -157,6 +181,7 @@ public commande chercher (commande c){
      
          cTr.setNumTel(result.getInt("numTel"));
          cTr.setEmail(result.getString("email"));
+         cTr.setTotal(result.getDouble("total"));
            
             retour.add(cTr);
             
@@ -168,7 +193,7 @@ public commande chercher (commande c){
        return retour ; 
     }
     
- public int unicId_c(int id){
+public int unicId_c(int id){
         String req="select * from commande where id_client = ?;";
         
         try {
@@ -186,6 +211,75 @@ public commande chercher (commande c){
         
         return 0;
     }
+public List<commande> getLastLine(){
+    
+
+    List<commande> retour= new ArrayList();
+        String req ="SELECT adresse,numTel,total FROM commande ORDER BY id_c DESC LIMIT 1;";
+      
+        try{
+           
+        PreparedStatement prepStat = mycnx.prepareStatement(req);
+        ResultSet result = prepStat.executeQuery();
+        while (result.next()){
+            commande cTr =new commande();
+         cTr.setAdresse(result.getString("adresse"));
+         
+         cTr.setNumTel(result.getInt("numTel"));
+         cTr.setTotal(result.getDouble("total"));
+           
+            retour.add(cTr);
+            
+       }
+       }
+       catch (SQLException ex){
+           System.out.println(ex.getMessage());
+       }
+       return retour ; 
     }
+public List<commande> getOrderHistoryWithLineOrders() {
+    List<commande> orderHistory = new ArrayList<>();
+    Map<Integer, commande> ordersMap = new HashMap<>();
+
+    String query = "SELECT commande.id_c, commande.date, lineorder.productName, lineorder.quantite, lineorder.prix " +
+            "FROM commande " +
+            "JOIN lineorder ON commande.id_c = lineorder.id_c " +
+            "ORDER BY commande.date DESC";
+
+    try {
+        PreparedStatement prepStat = mycnx.prepareStatement(query);
+        ResultSet resultSet = prepStat.executeQuery();
+
+        while (resultSet.next()) {
+            int orderId = resultSet.getInt("id_c");
+            LocalDate orderDate = resultSet.getDate("date").toLocalDate();
+            String productName = resultSet.getString("productName");
+            int quantity = resultSet.getInt("quantite");
+            double price = resultSet.getDouble("prix");
+
+            if (ordersMap.containsKey(orderId)) {
+                commande order = ordersMap.get(orderId);
+                LineOrder lineOrder = new LineOrder(productName, quantity, price);
+                order.addLineOrder(lineOrder);
+            } else {
+                commande order = new commande(orderId, orderDate);
+                LineOrder lineOrder = new LineOrder(productName, quantity, price);
+                order.addLineOrder(lineOrder);
+
+                ordersMap.put(orderId, order);
+                orderHistory.add(order);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return orderHistory;
+}
+}
+ 
+
+
+
     
 

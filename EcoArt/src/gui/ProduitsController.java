@@ -78,6 +78,8 @@ public class ProduitsController implements Initializable {
     private TableColumn<product, Integer> idPdts;
     @FXML
     private Button menu;
+    @FXML
+    private Button produitload;
 
     @Override
 
@@ -212,7 +214,6 @@ private void Menu(MouseEvent event) throws IOException {
     newStage.setScene(scene);
     newStage.show();
 }
-
 @FXML
 private void nomP(TableColumn.CellEditEvent<product, String> event) {
     String newValue = event.getNewValue();
@@ -246,8 +247,7 @@ private void prixP(TableColumn.CellEditEvent<product, Double> event) {
 // Repeat the same pattern for other columns...
 
 
-               
-    @FXML
+    @FXML           
 private void qteP(TableColumn.CellEditEvent<product, Integer> event) {
    product editedProduct = event.getRowValue();
     
@@ -296,5 +296,10 @@ private void descP(TableColumn.CellEditEvent<product, String> event) {
     pS.modifier(editedProduct);
 
 }
+
+   
+    @FXML
+    private void loadpdts(ActionEvent event) {
+    }
 }
 

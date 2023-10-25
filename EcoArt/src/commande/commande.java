@@ -5,8 +5,11 @@
  */
 package commande;
 
+import LineOrder.LineOrder;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -21,14 +24,18 @@ public class commande {
     LocalDate date ;
     int numTel;
     String email; 
+    double total;
+    private List<LineOrder> lineOrders;
 
-    public commande(String nomC, int id_client, String adresse, LocalDate date, int numTel, String email) {
+
+    public commande(String nomC, int id_client, String adresse, LocalDate date, int numTel, String email, double total) {
         this.nomC = nomC;
         this.id_client = id_client;
         this.adresse = adresse;
         this.date = date;
         this.numTel = numTel;
         this.email = email;
+        this.total=total;
     }
    
 
@@ -46,6 +53,15 @@ public class commande {
 
     public commande() {
     }
+
+    public List<LineOrder> getLineOrders() {
+        return lineOrders;
+    }
+
+    public void setLineOrders(List<LineOrder> lineOrders) {
+        this.lineOrders = lineOrders;
+    }
+    
 
     public long getId_c() {
         return id_c;
@@ -103,6 +119,14 @@ public class commande {
         this.email = email;
     }
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
    
 
     @Override
@@ -140,6 +164,16 @@ public class commande {
         }
         return true;
     }
+
+    public commande(long id_c, LocalDate date) {
+        this.id_c = id_c;
+        this.date = date;
+        this.lineOrders=new ArrayList<>();
+    }
+     public void addLineOrder(LineOrder lineOrder) {
+        lineOrders.add(lineOrder);
+    }
+
 
     
     
