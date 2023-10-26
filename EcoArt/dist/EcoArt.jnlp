@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="EcoArt.jar" size="99688" download="eager" />
+    <jar href="EcoArt.jar" size="113574" download="eager" />
     <jar href="lib\activation-1.1.jar" size="62983" download="eager" />
     <jar href="lib\com_stripe_stripe-java_24.0.0_stripe-java-24.0.0.jar" size="9255005" download="eager" />
     <jar href="lib\gson-2.10.1.jar" size="283367" download="eager" />

@@ -247,6 +247,30 @@ public product chercher (product p){
         
         return 0;
     }
+    public List<product> getproduitByCategorie(String categorie) throws SQLException {
+    List<product> retour = new ArrayList<>();
+    String req = "SELECT * FROM product WHERE categ = ?";
+
+    try {
+        PreparedStatement prepStat = mycnx.prepareStatement(req);
+        prepStat.setString(1, categorie);  // Set the category parameter
+        ResultSet result = prepStat.executeQuery();
+        while (result.next()){
+            product pTr =new product();
+            pTr.setId_pdts(result.getLong("idPdts"));
+            pTr.setNom(result.getString("nom"));
+            pTr.setPrix(result.getDouble("prix"));
+            pTr.setQte(result.getInt("qte"));
+            pTr.setCateg(result.getString("categ"));
+            pTr.setMatiere(result.getString("matiere"));
+            pTr.setDescription(result.getString("description"));
+            retour.add(pTr);
+        }
+    } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
+    }
+    return retour;
+}
     }
 
   
