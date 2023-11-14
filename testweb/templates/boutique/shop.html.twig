@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container mt-5">
+        <div class="row">
+            {% for produit in produit %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ asset('pictures/' ~ produit.image) }}" alt="{{ produit.nom }}" class="card-img-top" style="max-height: 300px; width: 100%; object-fit: cover;">
+                        <div class="card-body text-center d-flex flex-column align-items-center">
+                            <h5 class="card-title">{{ produit.nom }}</h5>
+                            <p class="card-text">Prix : {{ produit.prix }} €</p>
+                            <a href="{{ path('add_to_cart', {'id': produit.idpdts}) }}" class="btn btn-primary mt-auto">Add to Basket</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% if loop.index % 3 == 0 %}
+                    </div><div class="row">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="container mt-5">
+        <h2>Your Cart</h2>
+        {% if cartProducts is empty %}
+            <p>Your cart is empty.</p>
+        {% else %}
+            <ul>
+                {% for product in cartProducts %}
+                    <li>{{ product.nom }} - {{ product.prix }} €</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ path('checkout') }}" class="btn btn-primary">Checkout</a>
+        {% endif %}
+    </div>
+{% endblock %}

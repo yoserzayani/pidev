@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+ {{ parent() }}
+    <h1>All products</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>NameProduct</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>Material</th>
+                <th>Description</th>
+                <th>Picture</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in list %}
+                <tr>
+                    <td>{{ p.nom }}</td>
+                    <td>{{ p.prix }}</td>
+                    <td>{{ p.qte }}</td>
+                    <td>{{ p.categ }}</td>
+                    <td>{{ p.matiere }}</td>
+                    <td>{{ p.description }}</td>
+                    <td>
+                        {% if p.image is not null %}
+                            <img src="{{ asset('pictures/' ~ p.image) }}" alt="{{ p.nom }}" width="200" height="120">
+                        {% else %}
+                            No image
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('Product_updated', {'id': p.idpdts}) }}">Edit</a>
+                        <a href="{{ path('delete_product', {'id': p.idpdts}) }}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('add_product') }}">Add product</a>
+{% endblock %}
